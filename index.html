@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBIT React — Full Stack CLI</title>
+<link rel="icon" type="image/png" href="assets/react-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #07091a;
+    --panel: #11162f;
+    --panel-line: rgba(255,255,255,.07);
+    --text: #eef1ff;
+    --text-dim: #9aa3d1;
+    --react: #61dafb;
+    --purple: #8b6cff;
+    --go: #00add8;
+    --green: #3ddc84;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(97,218,251,.14), transparent 60%),
+      radial-gradient(1000px 500px at 85% 0%, rgba(139,108,255,.14), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Poppins', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  code, .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color:inherit; }
+
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px);
+    background:rgba(7,9,26,.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--panel-line);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:10px; font-weight:700; }
+  .nav-brand img{ width:28px; height:28px; }
+  nav .links{ display:flex; gap:26px; font-size:14px; color:var(--text-dim); }
+  nav .links a:hover{ color:var(--text); }
+  @media (max-width:640px){ nav .links{ display:none; } }
+
+  header{ padding: clamp(56px,9vw,100px) 20px 60px; text-align:center; }
+  .logo-mark{ width:120px; filter: drop-shadow(0 0 44px rgba(97,218,251,.4)); margin-bottom:8px; }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--react);
+    background:rgba(97,218,251,.08);
+    border:1px solid rgba(97,218,251,.25);
+    padding:7px 14px; border-radius:100px; margin-bottom:24px;
+  }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); }
+
+  header h1{
+    font-size: clamp(34px, 6vw, 60px);
+    font-weight:800; line-height:1.08; letter-spacing:-1.2px;
+    background:linear-gradient(100deg,#61dafb 0%, #8b6cff 45%, #f472b6 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  header p.tagline{ margin-top:16px; font-size:clamp(16px,2.1vw,19px); color:#dfe3ff; font-weight:500; }
+  header p.sub{ max-width:600px; margin:14px auto 0; font-size:15px; color:var(--text-dim); line-height:1.65; }
+
+  .terminal{
+    max-width:560px; margin:44px auto 0;
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:14px;
+    overflow:hidden; text-align:left; box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+  }
+  .terminal-bar{ display:flex; gap:8px; padding:12px 16px; background:#0c1130; border-bottom:1px solid var(--panel-line); }
+  .terminal-bar span{ width:11px; height:11px; border-radius:50%; }
+  .terminal-bar span:nth-child(1){ background:#ff5f57; }
+  .terminal-bar span:nth-child(2){ background:#febc2e; }
+  .terminal-bar span:nth-child(3){ background:#28c840; }
+  .terminal-body{ padding:22px; font-family:'JetBrains Mono', monospace; font-size:15px; }
+  .terminal-body .prompt{ color:var(--green); }
+  .cursor{ display:inline-block; width:8px; height:16px; background:var(--react); margin-left:2px; animation:blink 1s step-end infinite; vertical-align:-3px; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .section-label{ text-align:center; font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); margin:90px 0 8px; }
+  .section-title{ text-align:center; font-size:clamp(24px,3.2vw,32px); font-weight:700; margin-bottom:14px; }
+  .section-intro{ text-align:center; color:var(--text-dim); font-size:15px; max-width:520px; margin:0 auto 46px; line-height:1.6; }
+
+  .picker{
+    width:900px; max-width:92%; margin:0 auto 30px;
+    display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch;
+  }
+  .pick-card{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:20px;
+    padding:34px; position:relative; overflow:hidden;
+  }
+  .pick-card.node{ border-color:rgba(97,218,251,.3); }
+  .pick-card.go{ border-color:rgba(0,173,216,.35); }
+  .pick-card::before{ content:""; position:absolute; inset:0; opacity:.12; pointer-events:none; }
+  .pick-card.node::before{ background:radial-gradient(360px 140px at 15% -10%, var(--react), transparent 60%); }
+  .pick-card.go::before{ background:radial-gradient(360px 140px at 15% -10%, var(--go), transparent 60%); }
+
+  .pick-badge{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:5px 11px; border-radius:100px; display:inline-block; margin-bottom:16px; }
+  .pick-card.node .pick-badge{ color:var(--react); background:rgba(97,218,251,.12); border:1px solid rgba(97,218,251,.3); }
+  .pick-card.go .pick-badge{ color:var(--go); background:rgba(0,173,216,.12); border:1px solid rgba(0,173,216,.3); }
+
+  .pick-card h3{ font-size:22px; margin-bottom:6px; }
+  .pick-card .stack{ color:var(--text-dim); font-size:14px; margin-bottom:20px; }
+  .pick-card ul{ list-style:none; margin-bottom:24px; }
+  .pick-card li{ font-size:13.5px; color:#c9cfef; padding:5px 0; display:flex; gap:8px; align-items:center; }
+  .pick-card li::before{ content:"✓"; color:var(--green); font-weight:700; }
+
+  .vs{ display:flex; align-items:center; justify-content:center; padding:0 18px; font-family:'JetBrains Mono', monospace; color:var(--text-dim); font-size:13px; letter-spacing:1px; }
+  @media (max-width:760px){ .picker{ grid-template-columns:1fr; gap:18px; } .vs{ padding:6px 0; } }
+
+  .pick-code{
+    background:#050712; border:1px solid var(--panel-line); padding:12px 14px; border-radius:10px;
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:#d7ddff;
+  }
+
+  .container{ width:1100px; max-width:92%; margin:0 auto 30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px; }
+  .feat{ background:var(--panel); border:1px solid var(--panel-line); border-radius:16px; padding:26px; }
+  .feat .icon{ width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:linear-gradient(140deg, rgba(139,108,255,.25), transparent); border:1px solid rgba(139,108,255,.35); margin-bottom:16px; }
+  .feat .icon svg{ width:21px; height:21px; stroke:var(--purple); }
+  .feat h4{ font-size:16px; margin-bottom:6px; }
+  .feat p{ font-size:13.5px; color:var(--text-dim); line-height:1.6; }
+
+  .structure{
+    width:640px; max-width:92%; margin:0 auto 90px;
+    background:#050712; border:1px solid var(--panel-line); border-radius:14px;
+    padding:26px 30px; font-family:'JetBrains Mono', monospace; font-size:14px; line-height:2;
+  }
+  .structure .dir{ color:var(--react); }
+  .structure .cmt{ color:var(--text-dim); }
+
+  footer{ border-top:1px solid var(--panel-line); padding:40px 20px; text-align:center; color:var(--text-dim); font-size:13.5px; }
+  footer a{ text-decoration:none; margin:0 10px; }
+  footer a:hover{ color:var(--text); }
+
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><img src="assets/react-logo.png" alt="GBIT React"> GBIT React</div>
+  <div class="links">
+    <a href="#backend">Backend</a>
+    <a href="#features">Features</a>
+    <a href="https://github.com/Gislaine-programadora/gbit-react" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</nav>
+
+<header>
+  <img class="logo-mark" src="assets/react-logo.png" alt="GBIT React logo">
+  <div class="eyebrow"><span class="dot"></span> Node.js or Go · your choice</div>
+  <h1>Full stack React apps,<br>ready in minutes.</h1>
+  <p class="tagline">Choose your backend. Get a working app.</p>
+  <p class="sub">
+    Generates React + Vite + TypeScript on the frontend, and a real, working backend —
+    Node/Express or Go/Fiber — with JWT authentication and Docker already wired up.
+  </p>
+
+  <div class="terminal">
+    <div class="terminal-bar"><span></span><span></span><span></span></div>
+    <div class="terminal-body">
+      <span class="prompt">$</span> npx gbit-react<span class="cursor"></span>
+    </div>
+  </div>
+</header>
+
+<div class="section-label">Pick your stack</div>
+<div class="section-title">One frontend. Two backends.</div>
+<p class="section-intro">Both options ship the exact same API — the same routes, the same authentication flow. Switching stacks doesn't change how your frontend talks to it.</p>
+
+<div class="picker" id="backend">
+  <div class="pick-card node">
+    <span class="pick-badge">Default</span>
+    <h3>Node.js</h3>
+    <p class="stack">Express + Prisma ORM</p>
+    <ul>
+      <li>Familiar JavaScript/TypeScript ecosystem</li>
+      <li>Prisma schema, ready to extend</li>
+      <li>Huge npm package ecosystem</li>
+    </ul>
+    <div class="pick-code">npx gbit-react <span style="color:#61dafb">→ Node.js</span></div>
+  </div>
+
+  <div class="vs">VS</div>
+
+  <div class="pick-card go">
+    <span class="pick-badge">Performance</span>
+    <h3>Go</h3>
+    <p class="stack">Fiber + GORM</p>
+    <ul>
+      <li>Compiled binary, minimal Docker image</li>
+      <li>Built for high-concurrency workloads</li>
+      <li>Same auth routes as the Node backend</li>
+    </ul>
+    <div class="pick-code">npx gbit-react <span style="color:#00add8">→ Go</span></div>
+  </div>
+</div>
+
+<div class="section-label" id="features">What you get</div>
+<div class="section-title">Not a mockup. A working app.</div>
+
+<div class="container">
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <h4>Real JWT authentication</h4>
+    <p>Register, login, refresh and a protected profile route — password hashing included.</p>
+  </div>
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></div>
+    <h4>PostgreSQL, wired up</h4>
+    <p>Docker Compose starts your API and database together, on the same network.</p>
+  </div>
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+    <h4>Axios with auto-refresh</h4>
+    <p>The frontend automatically renews expired tokens — no manual re-login logic needed.</p>
+  </div>
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></div>
+    <h4>Modular architecture</h4>
+    <p>Routes, middleware and services separated from day one — easy to extend.</p>
+  </div>
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <h4>Docker multi-stage</h4>
+    <p>Lean production images — especially compact when you choose the Go backend.</p>
+  </div>
+  <div class="feat">
+    <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+    <h4>One command</h4>
+    <p>Answer two prompts — project name, backend choice — and everything scaffolds itself.</p>
+  </div>
+</div>
+
+<div class="section-label">Structure</div>
+<div class="section-title">What gets generated</div>
+
+<div class="structure">
+  <div class="dir">my-project/</div>
+  &nbsp;&nbsp;<span class="dir">frontend/</span> <span class="cmt">// React + Vite + TypeScript</span><br>
+  &nbsp;&nbsp;<span class="dir">backend/</span> <span class="cmt">// Node+Express+Prisma or Go+Fiber+GORM</span><br>
+  &nbsp;&nbsp;docker-compose.yml <span class="cmt">// orchestrates API + database</span>
+</div>
+
+<footer>
+  GBIT React © 2026 — part of the <a href="https://github.com/Gislaine-programadora">GBIT ecosystem</a>.
+  <br>
+  <a href="https://github.com/Gislaine-programadora/gbit-react" target="_blank" rel="noopener">GitHub</a>
+  <a href="https://www.npmjs.com/package/gbit-react" target="_blank" rel="noopener">npm</a>
+</footer>
+
+</body>
+</html>
