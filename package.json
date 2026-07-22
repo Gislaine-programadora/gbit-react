@@ -1,0 +1,25 @@
+{
+  "name": "gbit-react",
+  "version": "1.0.0",
+  "description": "Gera projetos React + Node/Express + Prisma + Docker completos, com autenticação JWT pronta.",
+  "type": "module",
+  "bin": {
+    "gbit-react": "bin/gbit-react.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "templates"
+  ],
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "figlet": "^1.7.0",
+    "gradient-string": "^2.0.2",
+    "inquirer": "^12.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Gislaine-programadora",
+  "license": "MIT"
+}

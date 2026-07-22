@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/gbit_db
+      JWT_SECRET: troque_esta_chave_secreta
+      JWT_REFRESH_SECRET: troque_esta_outra_chave_secreta
+      PORT: 4000
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gbit_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - gbit_pgdata:/var/lib/postgresql/data
+
+volumes:
+  gbit_pgdata:
