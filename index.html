@@ -69,6 +69,18 @@
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
 
+  .hero-logo{
+    display:flex;
+    justify-content:center;
+    margin-bottom:18px;
+}
+
+.hero-logo img{
+    width:780px;
+    max-width:90%;
+    height:auto;
+}
+
   header p.tagline{ margin-top:16px; font-size:clamp(16px,2.1vw,19px); color:#dfe3ff; font-weight:500; }
   header p.sub{ max-width:600px; margin:14px auto 0; font-size:15px; color:var(--text-dim); line-height:1.65; }
 
@@ -161,10 +173,24 @@
 </nav>
 
 <header>
-  <img class="logo-mark" src="assets/react-logo.png" alt="GBIT React logo">
-  <div class="eyebrow"><span class="dot"></span> Node.js or Go · your choice</div>
-  <h1>Full stack React apps,<br>ready in minutes.</h1>
-  <p class="tagline">Choose your backend. Get a working app.</p>
+  <div class="hero-logo">
+    <img src="react-logo.png" alt="GBIT React">
+  </div>
+
+  <div class="eyebrow">
+    <span class="dot"></span>
+    Node.js or Go · your choice
+  </div>
+
+  <h1>
+    Full Stack React Apps,<br>
+    Ready in Minutes.
+  </h1>
+
+  <p class="tagline">
+    Choose your backend. Get a working app.
+  </p>
+
   <p class="sub">
     Generates React + Vite + TypeScript on the frontend, and a real, working backend —
     Node/Express or Go/Fiber — with JWT authentication and Docker already wired up.
